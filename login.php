@@ -6,18 +6,27 @@
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }else{
-            $stmt = $conn->prepare("SELECT * FROM user WHERE Email = ? and Password = ?");
-            $stmt->bind_param("ss", $email, $password); // "s" indicates the parameter type is a string
-            $stmt->execute();
-            
-            $result = $stmt->get_result();
+            $query_user = "SELECT * FROM user WHERE Email = '$email'  and Password = '$password'";
+            $result_user = mysqli_query($conn, $query_user);
 
-            if ($result->num_rows == 1){
+            $query_admin = "SELECT * FROM admin WHERE Email = '$email' and Password = '$password'";
+            $result_admin = mysqli_query($conn, $query_admin);
+            
+
+            if ($result_admin) {
                 session_start();
-                $_SESSION['project'] = 'true';
-                header('location:SignUp.php');
-            }else{
-                echo 'Wrong Email or Password';
-            }
-        }
+                $_SESSION['auth'] = 'true';
+                header("Location: ./html/about.html");
+
+                exit;
+                } elseif ($result_user) {
+                    session_start();
+                    $_SESSION['auth'] = 'true';
+                    header("Location: ./html/about.html");
+                    exit;
+                } else {
+                    $output = "Sorry, we can't find an account with this email address. or incorrect password. Please try again";
+                    echo "<script>alert('$output'); window.location.href = './html/LogIn.html';</script>";
+                }
+        } 
     ?>
