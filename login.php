@@ -16,7 +16,7 @@
             if (mysqli_num_rows($result_admin) == 1) {
                 session_start();
                 $_SESSION['auth'] = 'true';
-                header("Location: ./html/about.html");
+                header("Location: ./html/menu.html");
 
                 exit;
                 } elseif (mysqli_num_rows($result_user) == 1) {
