@@ -13,13 +13,13 @@
             $result_admin = mysqli_query($conn, $query_admin);
             
 
-            if ($result_admin) {
+            if (mysqli_num_rows($result_admin) == 1) {
                 session_start();
                 $_SESSION['auth'] = 'true';
                 header("Location: ./html/about.html");
 
                 exit;
-                } elseif ($result_user) {
+                } elseif (mysqli_num_rows($result_user) == 1) {
                     session_start();
                     $_SESSION['auth'] = 'true';
                     header("Location: ./html/about.html");
